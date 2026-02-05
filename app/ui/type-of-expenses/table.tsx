@@ -1,0 +1,110 @@
+import { fetchExpenseTypes } from '@/app/lib/data';
+import { DeleteExpenseType, UpdateExpenseType } from '@/app/ui/type-of-expenses/buttons';
+
+export default async function ExpenseTypesTable() {
+  const expenseTypes = await fetchExpenseTypes();
+
+  if (!expenseTypes.length) {
+    return (
+      <div className="mt-6 rounded-lg bg-gray-50 p-6 text-center text-sm text-gray-600">
+        No expense types found. Create one to get started.
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-6 flow-root">
+      <div className="inline-block min-w-full align-middle">
+        <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
+          <div className="md:hidden">
+            {expenseTypes.map((expenseType) => (
+              <div
+                key={expenseType.id}
+                className="mb-2 w-full rounded-md bg-white p-4"
+              >
+                <div className="flex items-center justify-between border-b pb-4">
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">
+                      {expenseType.name}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      {expenseType.description || 'No description'}
+                    </p>
+                  </div>
+                  <span
+                    className="h-4 w-4 rounded-full border border-gray-200"
+                    style={{ backgroundColor: expenseType.color }}
+                    aria-label={`Color ${expenseType.color}`}
+                  />
+                </div>
+                <div className="flex w-full items-center justify-between pt-4">
+                  <span className="rounded-full bg-green-100 px-2.5 py-1 text-xs font-medium text-green-700">
+                    Active
+                  </span>
+                  <div className="flex justify-end gap-2">
+                    <UpdateExpenseType id={expenseType.id} />
+                    <DeleteExpenseType id={expenseType.id} name={expenseType.name} />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <table className="hidden min-w-full text-gray-900 md:table">
+            <thead className="rounded-lg text-left text-sm font-normal">
+              <tr>
+                <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
+                  Name
+                </th>
+                <th scope="col" className="px-3 py-5 font-medium">
+                  Color
+                </th>
+                <th scope="col" className="px-3 py-5 font-medium">
+                  Description
+                </th>
+                <th scope="col" className="px-3 py-5 font-medium">
+                  Active
+                </th>
+                <th scope="col" className="relative py-3 pl-6 pr-3">
+                  <span className="sr-only">Actions</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white">
+              {expenseTypes.map((expenseType) => (
+                <tr
+                  key={expenseType.id}
+                  className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
+                >
+                  <td className="whitespace-nowrap py-3 pl-6 pr-3">
+                    {expenseType.name}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3">
+                    <span
+                      className="inline-flex h-5 w-5 rounded-full border border-gray-200"
+                      style={{ backgroundColor: expenseType.color }}
+                      aria-label={`Color ${expenseType.color}`}
+                    />
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3 text-gray-600">
+                    {expenseType.description || 'No description'}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3">
+                    <span className="rounded-full bg-green-100 px-2.5 py-1 text-xs font-medium text-green-700">
+                      Active
+                    </span>
+                  </td>
+                  <td className="whitespace-nowrap py-3 pl-6 pr-3">
+                    <div className="flex justify-end gap-3">
+                      <UpdateExpenseType id={expenseType.id} />
+                      <DeleteExpenseType id={expenseType.id} name={expenseType.name} />
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -86,3 +86,21 @@ export type InvoiceForm = {
   amount: number;
   status: 'pending' | 'paid';
 };
+
+export type ExpenseType = {
+  id: string;
+  name: string;
+  color: string;
+  description: string | null;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ExpenseTypeForm = {
+  id: string;
+  name: string;
+  color: string;
+  description: string | null;
+  is_active: boolean;
+};
