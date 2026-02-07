@@ -28,6 +28,7 @@ export default function ExpenseForm({
     expense_type_id: string;
     spent_at: string;
     note: string | null;
+    is_income: boolean;
   };
   submitLabel: string;
   cancelHref: string;
@@ -138,6 +139,19 @@ export default function ExpenseForm({
             placeholder="Add a short note"
             className="block w-full rounded-md border border-gray-200 p-3 text-sm outline-2 placeholder:text-gray-500"
           />
+        </div>
+
+        <div className="flex items-center gap-3">
+          <input
+            id="is_income"
+            name="is_income"
+            type="checkbox"
+            defaultChecked={initialData?.is_income ?? false}
+            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-2"
+          />
+          <label htmlFor="is_income" className="text-sm font-medium">
+            Mark as income
+          </label>
         </div>
 
         <div aria-live="polite" aria-atomic="true">

@@ -44,6 +44,9 @@ export default function ExpensesTableSkeleton() {
                 <th scope="col" className="px-3 py-5 font-medium">
                   Note
                 </th>
+                <th scope="col" className="px-3 py-5 font-medium">
+                  Type
+                </th>
                 <th scope="col" className="relative py-3 pl-6 pr-3">
                   <span className="sr-only">Actions</span>
                 </th>
@@ -66,6 +69,9 @@ export default function ExpensesTableSkeleton() {
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
                     <div className="h-4 w-32 rounded bg-gray-100" />
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3">
+                    <div className="h-4 w-16 rounded bg-gray-100" />
                   </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">

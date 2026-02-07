@@ -10,6 +10,7 @@ export async function fetchExpenses() {
         expenses.expense_type_id,
         expenses.spent_at,
         expenses.note,
+        expenses.is_income,
         type_of_expenses.name AS expense_type_name,
         type_of_expenses.color AS expense_type_color
       FROM expenses
@@ -27,7 +28,7 @@ export async function fetchExpenses() {
 export async function fetchExpenseById(id: string) {
   try {
     const data = await sql<Expense[]>`
-      SELECT id, amount::float AS amount, expense_type_id, spent_at, note
+      SELECT id, amount::float AS amount, expense_type_id, spent_at, note, is_income
       FROM expenses
       WHERE id = ${id}
     `;
@@ -57,6 +58,7 @@ export async function fetchMonthlyExpenseLimits() {
       FROM type_of_expenses
       LEFT JOIN expenses
         ON expenses.expense_type_id = type_of_expenses.id
+        AND expenses.is_income = false
         AND expenses.spent_at >= date_trunc('month', now())
         AND expenses.spent_at < (date_trunc('month', now()) + interval '1 month')
       WHERE type_of_expenses.limit_month_spent IS NOT NULL
@@ -76,7 +78,8 @@ export async function fetchMonthlyExpenseTotal() {
     const data = await sql<{ total: number }[]>`
       SELECT COALESCE(SUM(amount), 0)::float AS total
       FROM expenses
-      WHERE spent_at >= date_trunc('month', now())
+      WHERE is_income = false
+        AND spent_at >= date_trunc('month', now())
         AND spent_at < (date_trunc('month', now()) + interval '1 month')
     `;
 
@@ -84,5 +87,22 @@ export async function fetchMonthlyExpenseTotal() {
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch monthly expense total.');
+  }
+}
+
+export async function fetchMonthlyIncomeTotal() {
+  try {
+    const data = await sql<{ total: number }[]>`
+      SELECT COALESCE(SUM(amount), 0)::float AS total
+      FROM expenses
+      WHERE is_income = true
+        AND spent_at >= date_trunc('month', now())
+        AND spent_at < (date_trunc('month', now()) + interval '1 month')
+    `;
+
+    return data[0]?.total ?? 0;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch monthly income total.');
   }
 }

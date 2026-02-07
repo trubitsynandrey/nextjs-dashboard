@@ -28,6 +28,7 @@ const ExpenseSchema = z.object({
   expenseTypeId: z.string().min(1, { message: 'Please select an expense type.' }),
   spentAt: z.string().optional(),
   note: z.string().optional(),
+  isIncome: z.boolean(),
 });
 
 function toIsoOrNull(value: string | undefined) {
@@ -46,6 +47,7 @@ export async function createExpense(
     expenseTypeId: formData.get('expense_type_id'),
     spentAt: formData.get('spent_at') ?? undefined,
     note: formData.get('note') ?? '',
+    isIncome: formData.get('is_income') === 'on',
   });
 
   if (!validatedFields.success) {
@@ -55,7 +57,7 @@ export async function createExpense(
     };
   }
 
-  const { amount, expenseTypeId, spentAt, note } = validatedFields.data;
+  const { amount, expenseTypeId, spentAt, note, isIncome } = validatedFields.data;
   const spentAtValue = toIsoOrNull(spentAt);
   const trimmedNote = note?.trim();
   const noteValue = trimmedNote ? trimmedNote : null;
@@ -63,13 +65,13 @@ export async function createExpense(
   try {
     if (spentAtValue) {
       await sql`
-        INSERT INTO expenses (amount, expense_type_id, spent_at, note)
-        VALUES (${amount}, ${expenseTypeId}, ${spentAtValue}, ${noteValue})
+        INSERT INTO expenses (amount, expense_type_id, spent_at, note, is_income)
+        VALUES (${amount}, ${expenseTypeId}, ${spentAtValue}, ${noteValue}, ${isIncome})
       `;
     } else {
       await sql`
-        INSERT INTO expenses (amount, expense_type_id, note)
-        VALUES (${amount}, ${expenseTypeId}, ${noteValue})
+        INSERT INTO expenses (amount, expense_type_id, note, is_income)
+        VALUES (${amount}, ${expenseTypeId}, ${noteValue}, ${isIncome})
       `;
     }
   } catch (error) {
@@ -91,6 +93,7 @@ export async function updateExpense(
     expenseTypeId: formData.get('expense_type_id'),
     spentAt: formData.get('spent_at') ?? undefined,
     note: formData.get('note') ?? '',
+    isIncome: formData.get('is_income') === 'on',
   });
 
   if (!validatedFields.success) {
@@ -100,7 +103,7 @@ export async function updateExpense(
     };
   }
 
-  const { amount, expenseTypeId, spentAt, note } = validatedFields.data;
+  const { amount, expenseTypeId, spentAt, note, isIncome } = validatedFields.data;
   const spentAtValue = toIsoOrNull(spentAt);
   const trimmedNote = note?.trim();
   const noteValue = trimmedNote ? trimmedNote : null;
@@ -109,13 +112,13 @@ export async function updateExpense(
     if (spentAtValue) {
       await sql`
         UPDATE expenses
-        SET amount = ${amount}, expense_type_id = ${expenseTypeId}, spent_at = ${spentAtValue}, note = ${noteValue}
+        SET amount = ${amount}, expense_type_id = ${expenseTypeId}, spent_at = ${spentAtValue}, note = ${noteValue}, is_income = ${isIncome}
         WHERE id = ${id}
       `;
     } else {
       await sql`
         UPDATE expenses
-        SET amount = ${amount}, expense_type_id = ${expenseTypeId}, note = ${noteValue}
+        SET amount = ${amount}, expense_type_id = ${expenseTypeId}, note = ${noteValue}, is_income = ${isIncome}
         WHERE id = ${id}
       `;
     }

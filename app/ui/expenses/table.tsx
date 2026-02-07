@@ -46,9 +46,12 @@ export default async function ExpensesTable() {
                   </span>
                 </div>
                 <div className="flex w-full items-center justify-between pt-4">
-                  <p className="text-sm text-gray-500">
-                    {expense.note || 'No note'}
-                  </p>
+                  <div className="flex flex-col gap-1 text-sm text-gray-500">
+                    <span>{expense.note || 'No note'}</span>
+                    <span className={expense.is_income ? 'text-emerald-600' : 'text-rose-600'}>
+                      {expense.is_income ? 'Income' : 'Expense'}
+                    </span>
+                  </div>
                   <div className="flex justify-end gap-2">
                     <UpdateExpense id={expense.id} />
                     <DeleteExpense id={expense.id} />
@@ -71,6 +74,9 @@ export default async function ExpensesTable() {
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
                   Note
+                </th>
+                <th scope="col" className="px-3 py-5 font-medium">
+                  Type
                 </th>
                 <th scope="col" className="relative py-3 pl-6 pr-3">
                   <span className="sr-only">Actions</span>
@@ -100,6 +106,11 @@ export default async function ExpensesTable() {
                   </td>
                   <td className="whitespace-nowrap px-3 py-3 text-gray-600">
                     {expense.note || 'No note'}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3">
+                    <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${expense.is_income ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}`}>
+                      {expense.is_income ? 'Income' : 'Expense'}
+                    </span>
                   </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">

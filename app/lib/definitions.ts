@@ -116,6 +116,7 @@ export type Expense = {
   expense_type_id: string;
   spent_at: string;
   note: string | null;
+  is_income: boolean;
 };
 
 export type ExpenseWithType = Expense & {
