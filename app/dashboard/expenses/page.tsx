@@ -6,8 +6,9 @@ import ExpensesTable from '@/app/ui/expenses/table';
 import { CreateExpense } from '@/app/ui/expenses/buttons';
 import ExpensesTableSkeleton from '@/app/ui/expenses/skeleton';
 import { Card } from '@/app/ui/dashboard/cards';
-import { fetchMonthlyExpenseTotal, fetchMonthlyIncomeTotal } from '@/app/lib/data/expenses';
+import { fetchExpenses, fetchMonthlyExpenseTotal, fetchMonthlyIncomeTotal } from '@/app/lib/data/expenses';
 import ExpenseLimits from '@/app/ui/expenses/limits';
+import ExpenseBreakdownClient from '@/app/ui/expenses/breakdown-client';
 
 export const metadata: Metadata = {
   title: 'Expenses',
@@ -58,11 +59,15 @@ export default async function Page(props: {
     style: 'currency',
     currency: 'RUB',
   });
+  const expenses = await fetchExpenses(monthStart.toISOString(), monthEnd.toISOString());
 
   return (
     <div className="w-full">
-      <div className="flex w-full flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <h1 className={`${lusitana.className} text-2xl`}>Expenses</h1>
+      <h1 className={`${lusitana.className} text-2xl`}>Expenses</h1>
+      <div className="mt-4 flex w-full flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div className="flex items-center gap-2">
+          <CreateExpense />
+        </div>
         <div className="flex items-center gap-2 text-sm text-gray-600">
           <Link
             href={`/dashboard/expenses?month=${prevMonthKey}`}
@@ -79,14 +84,26 @@ export default async function Page(props: {
           </Link>
         </div>
       </div>
-      <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        <Card title="Total Expenses (RUB)" value={formattedMonthlyExpenseTotal} type="expenses" />
-        <Card title="Total Income (RUB)" value={formattedMonthlyIncomeTotal} type="expenses" />
+      <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <Card
+          title="Total Expenses (RUB)"
+          value={formattedMonthlyExpenseTotal}
+          type="expenses"
+          rootClassName="h-fit"
+        />
+        <Card
+          title="Total Income (RUB)"
+          value={formattedMonthlyIncomeTotal}
+          type="expenses"
+          rootClassName="h-fit"
+        />
+        <ExpenseBreakdownClient expenses={expenses} />
       </div>
-      <ExpenseLimits monthStart={monthStart.toISOString()} monthEnd={monthEnd.toISOString()} />
-      <div className="mt-4 flex items-center justify-end gap-2 md:mt-8">
-        <CreateExpense />
-      </div>
+      <ExpenseLimits
+        monthStart={monthStart.toISOString()}
+        monthEnd={monthEnd.toISOString()}
+        expenses={expenses}
+      />
       <Suspense fallback={<ExpensesTableSkeleton />}>
         <ExpensesTable monthStart={monthStart.toISOString()} monthEnd={monthEnd.toISOString()} />
       </Suspense>
