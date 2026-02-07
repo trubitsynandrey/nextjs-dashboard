@@ -1,7 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import { formatDateToLocal } from '@/app/lib/utils';
+import { ExpenseWithType } from '@/app/lib/definitions';
 
 type LimitRow = {
   expense_type_id: string;
@@ -18,8 +20,29 @@ const formatRub = (amount: number) =>
     maximumFractionDigits: 2,
   });
 
-export default function ExpenseLimitsClient({ limits }: { limits: LimitRow[] }) {
+export default function ExpenseLimitsClient({
+  limits,
+  expenses,
+}: {
+  limits: LimitRow[];
+  expenses: ExpenseWithType[];
+}) {
   const [isOpen, setIsOpen] = useState(true);
+  const expensesByType = useMemo(() => {
+    const map = new Map<string, ExpenseWithType[]>();
+    for (const expense of expenses) {
+      if (expense.is_income) {
+        continue;
+      }
+      const list = map.get(expense.expense_type_id);
+      if (list) {
+        list.push(expense);
+      } else {
+        map.set(expense.expense_type_id, [expense]);
+      }
+    }
+    return map;
+  }, [expenses]);
 
   return (
     <div className="mt-6 rounded-xl bg-gray-50 p-4 shadow-sm">
@@ -37,7 +60,11 @@ export default function ExpenseLimitsClient({ limits }: { limits: LimitRow[] }) 
       {isOpen ? (
         <div className="mt-4 grid gap-4">
           {limits.map((limit) => {
-            const percent = Math.min(100, Math.round((limit.spent / limit.limit) * 100));
+            const percent =
+              limit.limit > 0
+                ? Math.min(100, Math.round((limit.spent / limit.limit) * 100))
+                : 0;
+            const limitExpenses = expensesByType.get(limit.expense_type_id) ?? [];
             return (
               <div key={limit.expense_type_id} className="rounded-lg bg-white p-4">
                 <div className="flex items-center justify-between">
@@ -62,6 +89,38 @@ export default function ExpenseLimitsClient({ limits }: { limits: LimitRow[] }) 
                   />
                 </div>
                 <div className="mt-2 text-xs text-gray-500">{percent}% used</div>
+                <details className="mt-3 rounded-md border border-gray-100 bg-gray-50/60 px-3 py-2">
+                  <summary className="cursor-pointer select-none text-xs font-medium text-gray-600">
+                    {limitExpenses.length
+                      ? `Show expenses (${limitExpenses.length})`
+                      : 'No expenses yet'}
+                  </summary>
+                  {limitExpenses.length ? (
+                    <div className="mt-3 space-y-2">
+                      {limitExpenses.map((expense) => (
+                        <div
+                          key={expense.id}
+                          className="flex items-start justify-between gap-4 rounded-md bg-white px-3 py-2 text-xs text-gray-700 shadow-sm"
+                        >
+                          <div className="min-w-0">
+                            <div className="font-medium text-gray-900">
+                              {formatRub(expense.amount)}
+                            </div>
+                            <div className="text-gray-500">
+                              {formatDateToLocal(expense.spent_at)}
+                            </div>
+                            <div className="truncate text-gray-600">
+                              {expense.note || 'No note'}
+                            </div>
+                          </div>
+                          <div className="shrink-0 text-right text-gray-500">
+                            {expense.expense_type_name}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : null}
+                </details>
               </div>
             );
           })}
