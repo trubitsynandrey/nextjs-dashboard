@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
 import ExpenseTypeForm from '@/app/ui/type-of-expenses/form';
-import { createExpenseType } from '@/app/lib/actions';
+import { createExpenseType } from '@/app/lib/actions/expense-types';
 
 export const metadata: Metadata = {
   title: 'Create Expense Type',

@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
 import ExpenseTypeForm from '@/app/ui/type-of-expenses/form';
 import { fetchExpenseTypeById } from '@/app/lib/data';
-import { updateExpenseType } from '@/app/lib/actions';
+import { updateExpenseType } from '@/app/lib/actions/expense-types';
 
 export const metadata: Metadata = {
   title: 'Edit Expense Type',

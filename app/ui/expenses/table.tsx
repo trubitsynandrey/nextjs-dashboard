@@ -1,13 +1,20 @@
-import { fetchExpenseTypes } from '@/app/lib/data';
-import { DeleteExpenseType, UpdateExpenseType } from '@/app/ui/type-of-expenses/buttons';
+import { fetchExpenses } from '@/app/lib/data';
+import { DeleteExpense, UpdateExpense } from '@/app/ui/expenses/buttons';
+import { formatDateToLocal } from '@/app/lib/utils';
 
-export default async function ExpenseTypesTable() {
-  const expenseTypes = await fetchExpenseTypes();
+const formatAmount = (amount: number) =>
+  amount.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'RUB',
+  });
 
-  if (!expenseTypes.length) {
+export default async function ExpensesTable() {
+  const expenses = await fetchExpenses();
+
+  if (!expenses.length) {
     return (
       <div className="mt-6 rounded-lg bg-gray-50 p-6 text-center text-sm text-gray-600">
-        No expense types found. Create one to get started.
+        No expenses found. Create one to get started.
       </div>
     );
   }
@@ -17,30 +24,34 @@ export default async function ExpenseTypesTable() {
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
           <div className="md:hidden">
-            {expenseTypes.map((expenseType) => (
-              <div
-                key={expenseType.id}
-                className="mb-2 w-full rounded-md bg-white p-4"
-              >
+            {expenses.map((expense) => (
+              <div key={expense.id} className="mb-2 w-full rounded-md bg-white p-4">
                 <div className="flex items-center justify-between border-b pb-4">
                   <div>
                     <p className="text-sm font-medium text-gray-900">
-                      {expenseType.name}
+                      {formatAmount(expense.amount)}
                     </p>
                     <p className="text-sm text-gray-500">
-                      {expenseType.description || 'No description'}
+                      {formatDateToLocal(expense.spent_at)}
                     </p>
                   </div>
                   <span
-                    className="h-4 w-4 rounded-full border border-gray-200"
-                    style={{ backgroundColor: expenseType.color }}
-                    aria-label={`Color ${expenseType.color}`}
-                  />
+                    className="inline-flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700"
+                  >
+                    <span
+                      className="h-2 w-2 rounded-full"
+                      style={{ backgroundColor: expense.expense_type_color }}
+                    />
+                    {expense.expense_type_name}
+                  </span>
                 </div>
                 <div className="flex w-full items-center justify-between pt-4">
+                  <p className="text-sm text-gray-500">
+                    {expense.note || 'No note'}
+                  </p>
                   <div className="flex justify-end gap-2">
-                    <UpdateExpenseType id={expenseType.id} />
-                    <DeleteExpenseType id={expenseType.id} name={expenseType.name} />
+                    <UpdateExpense id={expense.id} />
+                    <DeleteExpense id={expense.id} />
                   </div>
                 </div>
               </div>
@@ -50,13 +61,16 @@ export default async function ExpenseTypesTable() {
             <thead className="rounded-lg text-left text-sm font-normal">
               <tr>
                 <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
-                  Name
+                  Amount
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Color
+                  Type
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Description
+                  Spent At
+                </th>
+                <th scope="col" className="px-3 py-5 font-medium">
+                  Note
                 </th>
                 <th scope="col" className="relative py-3 pl-6 pr-3">
                   <span className="sr-only">Actions</span>
@@ -64,28 +78,33 @@ export default async function ExpenseTypesTable() {
               </tr>
             </thead>
             <tbody className="bg-white">
-              {expenseTypes.map((expenseType) => (
+              {expenses.map((expense) => (
                 <tr
-                  key={expenseType.id}
+                  key={expense.id}
                   className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
                 >
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
-                    {expenseType.name}
+                    {formatAmount(expense.amount)}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    <span
-                      className="inline-flex h-5 w-5 rounded-full border border-gray-200"
-                      style={{ backgroundColor: expenseType.color }}
-                      aria-label={`Color ${expenseType.color}`}
-                    />
+                    <span className="inline-flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700">
+                      <span
+                        className="h-2 w-2 rounded-full"
+                        style={{ backgroundColor: expense.expense_type_color }}
+                      />
+                      {expense.expense_type_name}
+                    </span>
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3">
+                    {formatDateToLocal(expense.spent_at)}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3 text-gray-600">
-                    {expenseType.description || 'No description'}
+                    {expense.note || 'No note'}
                   </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
-                      <UpdateExpenseType id={expenseType.id} />
-                      <DeleteExpenseType id={expenseType.id} name={expenseType.name} />
+                      <UpdateExpense id={expense.id} />
+                      <DeleteExpense id={expense.id} />
                     </div>
                   </td>
                 </tr>

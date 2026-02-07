@@ -92,7 +92,6 @@ export type ExpenseType = {
   name: string;
   color: string;
   description: string | null;
-  is_active: boolean;
   created_at: string;
   updated_at: string;
 };
@@ -102,5 +101,22 @@ export type ExpenseTypeForm = {
   name: string;
   color: string;
   description: string | null;
-  is_active: boolean;
+};
+
+export type ExpenseTypeOption = {
+  id: string;
+  name: string;
+};
+
+export type Expense = {
+  id: string;
+  amount: number;
+  expense_type_id: string;
+  spent_at: string;
+  note: string | null;
+};
+
+export type ExpenseWithType = Expense & {
+  expense_type_name: string;
+  expense_type_color: string;
 };

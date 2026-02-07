@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useActionState } from 'react';
 import { Button } from '@/app/ui/button';
-import { ExpenseTypeFormAction, ExpenseTypeFormState } from '@/app/lib/actions';
+import { ExpenseTypeFormAction, ExpenseTypeFormState } from '@/app/lib/actions/expense-types';
 
 export default function ExpenseTypeForm({
   action,
@@ -16,7 +16,6 @@ export default function ExpenseTypeForm({
     name: string;
     color: string;
     description: string | null;
-    is_active: boolean;
   };
   submitLabel: string;
   cancelHref: string;
@@ -86,19 +85,6 @@ export default function ExpenseTypeForm({
             placeholder="Add a short description"
             className="block w-full rounded-md border border-gray-200 p-3 text-sm outline-2 placeholder:text-gray-500"
           />
-        </div>
-
-        <div className="flex items-center gap-3">
-          <input
-            id="is_active"
-            name="is_active"
-            type="checkbox"
-            defaultChecked={initialData?.is_active ?? true}
-            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-2"
-          />
-          <label htmlFor="is_active" className="text-sm font-medium">
-            Active
-          </label>
         </div>
 
         <div aria-live="polite" aria-atomic="true">

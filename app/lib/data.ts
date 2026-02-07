@@ -3,6 +3,9 @@ import {
   CustomerField,
   CustomersTableType,
   ExpenseTypeForm,
+  ExpenseTypeOption,
+  ExpenseWithType,
+  Expense,
   ExpenseType,
   InvoiceForm,
   InvoicesTable,
@@ -15,10 +18,6 @@ const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
 export async function fetchRevenue() {
   try {
-    // Artificially delay a response for demo purposes.
-    // Don't do this in production :)
-
-    console.log('Fetching revenue data...');
     await new Promise((resolve) => setTimeout(resolve, 3000));
 
     const data = await sql<Revenue[]>`SELECT * FROM revenue`;
@@ -224,10 +223,9 @@ export async function fetchFilteredCustomers(query: string) {
 export async function fetchExpenseTypes() {
   try {
     const data = await sql<ExpenseType[]>`
-      SELECT id, name, color, description, is_active
+      SELECT id, name, color, description
       FROM type_of_expenses
-      WHERE is_active = true
-      ORDER BY name ASC
+      ORDER BY updated_at DESC
     `;
 
     return data;
@@ -240,14 +238,67 @@ export async function fetchExpenseTypes() {
 export async function fetchExpenseTypeById(id: string) {
   try {
     const data = await sql<ExpenseTypeForm[]>`
-      SELECT id, name, color, description, is_active
+      SELECT id, name, color, description
       FROM type_of_expenses
-      WHERE id = ${id} AND is_active = true
+      WHERE id = ${id}
     `;
 
     return data[0];
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch expense type.');
+  }
+}
+
+export async function fetchExpenseTypeOptions() {
+  try {
+    const data = await sql<ExpenseTypeOption[]>`
+      SELECT id, name
+      FROM type_of_expenses
+      ORDER BY name ASC
+    `;
+
+    return data;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch expense types.');
+  }
+}
+
+export async function fetchExpenses() {
+  try {
+    const data = await sql<ExpenseWithType[]>`
+      SELECT
+        expenses.id,
+        expenses.amount::float AS amount,
+        expenses.expense_type_id,
+        expenses.spent_at,
+        expenses.note,
+        type_of_expenses.name AS expense_type_name,
+        type_of_expenses.color AS expense_type_color
+      FROM expenses
+      JOIN type_of_expenses ON expenses.expense_type_id = type_of_expenses.id
+      ORDER BY expenses.spent_at DESC
+    `;
+
+    return data;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch expenses.');
+  }
+}
+
+export async function fetchExpenseById(id: string) {
+  try {
+    const data = await sql<Expense[]>`
+      SELECT id, amount::float AS amount, expense_type_id, spent_at, note
+      FROM expenses
+      WHERE id = ${id}
+    `;
+
+    return data[0];
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch expense.');
   }
 }

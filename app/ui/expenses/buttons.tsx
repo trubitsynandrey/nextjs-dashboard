@@ -3,24 +3,24 @@
 import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { useActionState, useState } from 'react';
-import { deleteExpenseType, DeleteExpenseTypeState } from '@/app/lib/actions/expense-types';
+import { deleteExpense, DeleteExpenseState } from '@/app/lib/actions/expenses';
 
-export function CreateExpenseType() {
+export function CreateExpense() {
   return (
     <Link
-      href="/dashboard/type-of-expenses/create"
+      href="/dashboard/expenses/create"
       className="flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
     >
-      <span className="hidden md:block">Create Expense Type</span>{' '}
+      <span className="hidden md:block">Create Expense</span>{' '}
       <PlusIcon className="h-5 md:ml-4" />
     </Link>
   );
 }
 
-export function UpdateExpenseType({ id }: { id: string }) {
+export function UpdateExpense({ id }: { id: string }) {
   return (
     <Link
-      href={`/dashboard/type-of-expenses/${id}/edit`}
+      href={`/dashboard/expenses/${id}/edit`}
       className="rounded-md border p-2 hover:bg-gray-100"
     >
       <PencilIcon className="w-5" />
@@ -28,17 +28,17 @@ export function UpdateExpenseType({ id }: { id: string }) {
   );
 }
 
-export function DeleteExpenseType({ id, name }: { id: string; name: string }) {
-  const deleteExpenseTypeWithId = deleteExpenseType.bind(null, id);
-  const initialState: DeleteExpenseTypeState = { message: null };
-  const [isOpen, setIsOpen] = useState(false);
+export function DeleteExpense({ id }: { id: string }) {
+  const deleteExpenseWithId = deleteExpense.bind(null, id);
+  const initialState: DeleteExpenseState = { message: null };
   const [state, formAction] = useActionState(async (prevState) => {
-    const result = await deleteExpenseTypeWithId(prevState);
+    const result = await deleteExpenseWithId(prevState);
     if (!result.message) {
       setIsOpen(false);
     }
     return result;
   }, initialState);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
@@ -53,19 +53,14 @@ export function DeleteExpenseType({ id, name }: { id: string; name: string }) {
       {isOpen ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50 p-4">
           <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
-            <h2 className="text-lg font-semibold text-gray-900">
-              Delete expense type?
-            </h2>
+            <h2 className="text-lg font-semibold text-gray-900">Delete expense?</h2>
             <p className="mt-2 text-sm text-gray-600">
-              "{name}" will be permanently deleted from the database.
+              This expense will be permanently deleted from the database.
             </p>
             {state.message ? (
               <p className="mt-4 text-sm text-red-500">{state.message}</p>
             ) : null}
-            <form
-              action={formAction}
-              className="mt-6 flex justify-end gap-3"
-            >
+            <form action={formAction} className="mt-6 flex justify-end gap-3">
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
