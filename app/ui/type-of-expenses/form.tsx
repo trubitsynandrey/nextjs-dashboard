@@ -51,6 +51,22 @@ export default function ExpenseTypeForm({
         </div>
 
         <div className="mb-4">
+          <label htmlFor="limit_month_spent" className="mb-2 block text-sm font-medium">
+            Monthly Spend Limit (optional)
+          </label>
+          <input
+            id="limit_month_spent"
+            name="limit_month_spent"
+            type="number"
+            step="0.01"
+            min="0"
+            defaultValue={initialData?.limit_month_spent ?? ''}
+            placeholder="Enter monthly limit"
+            className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm outline-2 placeholder:text-gray-500"
+          />
+        </div>
+
+        <div className="mb-4">
           <label htmlFor="color" className="mb-2 block text-sm font-medium">
             Color
           </label>
@@ -85,22 +101,6 @@ export default function ExpenseTypeForm({
             defaultValue={initialData?.description ?? ''}
             placeholder="Add a short description"
             className="block w-full rounded-md border border-gray-200 p-3 text-sm outline-2 placeholder:text-gray-500"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="limit_month_spent" className="mb-2 block text-sm font-medium">
-            Monthly Spend Limit (optional)
-          </label>
-          <input
-            id="limit_month_spent"
-            name="limit_month_spent"
-            type="number"
-            step="0.01"
-            min="0"
-            defaultValue={initialData?.limit_month_spent ?? ''}
-            placeholder="Enter monthly limit"
-            className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm outline-2 placeholder:text-gray-500"
           />
         </div>
 

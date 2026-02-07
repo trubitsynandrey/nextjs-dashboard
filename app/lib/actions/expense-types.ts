@@ -74,6 +74,7 @@ export async function createExpenseType(
   }
 
   revalidatePath('/dashboard/type-of-expenses');
+  revalidatePath('/dashboard/expenses');
   redirect('/dashboard/type-of-expenses');
 }
 
@@ -119,6 +120,7 @@ export async function updateExpenseType(
   }
 
   revalidatePath('/dashboard/type-of-expenses');
+  revalidatePath('/dashboard/expenses');
   redirect('/dashboard/type-of-expenses');
 }
 
