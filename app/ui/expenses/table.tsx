@@ -8,8 +8,14 @@ const formatAmount = (amount: number) =>
     currency: 'RUB',
   });
 
-export default async function ExpensesTable() {
-  const expenses = await fetchExpenses();
+export default async function ExpensesTable({
+  monthStart,
+  monthEnd,
+}: {
+  monthStart: string;
+  monthEnd: string;
+}) {
+  const expenses = await fetchExpenses(monthStart, monthEnd);
 
   if (!expenses.length) {
     return (
