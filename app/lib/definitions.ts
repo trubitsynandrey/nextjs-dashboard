@@ -92,6 +92,7 @@ export type ExpenseType = {
   name: string;
   color: string;
   description: string | null;
+  limit_month_spent: number | null;
   created_at: string;
   updated_at: string;
 };
@@ -101,6 +102,7 @@ export type ExpenseTypeForm = {
   name: string;
   color: string;
   description: string | null;
+  limit_month_spent: number | null;
 };
 
 export type ExpenseTypeOption = {

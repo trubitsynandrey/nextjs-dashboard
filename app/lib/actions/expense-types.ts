@@ -28,6 +28,10 @@ const ExpenseTypeSchema = z.object({
     .string()
     .regex(/^#[0-9A-Fa-f]{6}$/, { message: 'Please choose a valid hex color.' }),
   description: z.string().optional(),
+  limitMonthSpent: z.preprocess(
+    (value) => (value === '' || value === null ? undefined : value),
+    z.coerce.number().positive({ message: 'Limit must be greater than 0.' }).optional(),
+  ),
 });
 
 export async function createExpenseType(
@@ -38,6 +42,7 @@ export async function createExpenseType(
     name: formData.get('name'),
     color: formData.get('color'),
     description: formData.get('description') ?? '',
+    limitMonthSpent: formData.get('limit_month_spent'),
   });
 
   if (!validatedFields.success) {
@@ -47,14 +52,15 @@ export async function createExpenseType(
     };
   }
 
-  const { name, color, description } = validatedFields.data;
+  const { name, color, description, limitMonthSpent } = validatedFields.data;
   const trimmedDescription = description?.trim();
   const descriptionValue = trimmedDescription ? trimmedDescription : null;
+  const limitValue = typeof limitMonthSpent === 'number' ? limitMonthSpent : null;
 
   try {
     await sql`
-      INSERT INTO type_of_expenses (name, color, description)
-      VALUES (${name}, ${color}, ${descriptionValue})
+      INSERT INTO type_of_expenses (name, color, description, limit_month_spent)
+      VALUES (${name}, ${color}, ${descriptionValue}, ${limitValue})
     `;
   } catch (error: any) {
     if (error?.code === '23505') {
@@ -80,6 +86,7 @@ export async function updateExpenseType(
     name: formData.get('name'),
     color: formData.get('color'),
     description: formData.get('description') ?? '',
+    limitMonthSpent: formData.get('limit_month_spent'),
   });
 
   if (!validatedFields.success) {
@@ -89,14 +96,15 @@ export async function updateExpenseType(
     };
   }
 
-  const { name, color, description } = validatedFields.data;
+  const { name, color, description, limitMonthSpent } = validatedFields.data;
   const trimmedDescription = description?.trim();
   const descriptionValue = trimmedDescription ? trimmedDescription : null;
+  const limitValue = typeof limitMonthSpent === 'number' ? limitMonthSpent : null;
 
   try {
     await sql`
       UPDATE type_of_expenses
-      SET name = ${name}, color = ${color}, description = ${descriptionValue}
+      SET name = ${name}, color = ${color}, description = ${descriptionValue}, limit_month_spent = ${limitValue}
       WHERE id = ${id}
     `;
   } catch (error: any) {

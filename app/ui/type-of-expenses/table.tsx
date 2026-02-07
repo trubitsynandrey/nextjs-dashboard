@@ -38,6 +38,9 @@ export default async function ExpenseTypesTable() {
                   />
                 </div>
                 <div className="flex w-full items-center justify-between pt-4">
+                  <p className="text-sm text-gray-500">
+                    Limit: {expenseType.limit_month_spent ?? '—'}
+                  </p>
                   <div className="flex justify-end gap-2">
                     <UpdateExpenseType id={expenseType.id} />
                     <DeleteExpenseType id={expenseType.id} name={expenseType.name} />
@@ -57,6 +60,9 @@ export default async function ExpenseTypesTable() {
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
                   Description
+                </th>
+                <th scope="col" className="px-3 py-5 font-medium">
+                  Monthly Limit
                 </th>
                 <th scope="col" className="relative py-3 pl-6 pr-3">
                   <span className="sr-only">Actions</span>
@@ -81,6 +87,9 @@ export default async function ExpenseTypesTable() {
                   </td>
                   <td className="whitespace-nowrap px-3 py-3 text-gray-600">
                     {expenseType.description || 'No description'}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3 text-gray-600">
+                    {expenseType.limit_month_spent ?? '—'}
                   </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
