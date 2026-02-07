@@ -1,4 +1,4 @@
-import { fetchExpenses } from '@/app/lib/data';
+import { fetchExpenses } from '@/app/lib/data/expenses';
 import { DeleteExpense, UpdateExpense } from '@/app/ui/expenses/buttons';
 import { formatDateToLocal } from '@/app/lib/utils';
 

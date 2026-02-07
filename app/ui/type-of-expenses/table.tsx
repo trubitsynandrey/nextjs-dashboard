@@ -1,4 +1,4 @@
-import { fetchExpenseTypes } from '@/app/lib/data';
+import { fetchExpenseTypes } from '@/app/lib/data/expense-types';
 import { DeleteExpenseType, UpdateExpenseType } from '@/app/ui/type-of-expenses/buttons';
 
 export default async function ExpenseTypesTable() {
