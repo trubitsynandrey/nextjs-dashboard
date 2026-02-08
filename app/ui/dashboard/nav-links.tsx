@@ -5,6 +5,7 @@ import {
   DocumentDuplicateIcon,
   TagIcon,
   BanknotesIcon,
+  MapPinIcon,
 } from '@heroicons/react/24/outline';
 import { clsx } from 'clsx';
 import Link from 'next/link';
@@ -28,6 +29,11 @@ const links = [
     name: 'Expense Types',
     href: '/dashboard/type-of-expenses',
     icon: TagIcon,
+  },
+  {
+    name: 'Geo Tasks',
+    href: '/dashboard/geo-tasks',
+    icon: MapPinIcon,
   },
 ];
 

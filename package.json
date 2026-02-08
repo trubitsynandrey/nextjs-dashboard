@@ -16,9 +16,9 @@
     "next-auth": "5.0.0-beta.30",
     "postcss": "8.5.1",
     "postgres": "^3.4.6",
-    "recharts": "^3.7.0",
     "react": "latest",
     "react-dom": "latest",
+    "recharts": "^3.7.0",
     "tailwindcss": "3.4.17",
     "typescript": "5.7.3",
     "use-debounce": "^10.0.4",
@@ -29,6 +29,7 @@
     "@types/node": "22.10.7",
     "@types/react": "19.0.7",
     "@types/react-dom": "19.0.3",
+    "@yandex/ymaps3-types": "^1.0.18650382",
     "eslint": "^9.39.2",
     "eslint-config-next": "^16.1.6"
   },
