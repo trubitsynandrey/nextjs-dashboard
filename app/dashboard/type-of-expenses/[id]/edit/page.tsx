@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
+import Breadcrumbs from '@/app/ui/breadcrumbs';
 import ExpenseTypeForm from '@/app/ui/type-of-expenses/form';
 import { fetchExpenseTypeById } from '@/app/lib/data/expense-types';
 import { updateExpenseType } from '@/app/lib/actions/expense-types';

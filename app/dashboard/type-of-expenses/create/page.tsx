@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
+import Breadcrumbs from '@/app/ui/breadcrumbs';
 import ExpenseTypeForm from '@/app/ui/type-of-expenses/form';
 import { createExpenseType } from '@/app/lib/actions/expense-types';
 
