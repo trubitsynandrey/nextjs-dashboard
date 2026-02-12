@@ -14,6 +14,9 @@ importers:
       '@tailwindcss/forms':
         specifier: ^0.5.10
         version: 0.5.10(tailwindcss@3.4.17)
+      '@yandex/ymaps3-default-ui-theme':
+        specifier: ^0.0.24
+        version: 0.0.24
       autoprefixer:
         specifier: 10.4.20
         version: 10.4.20(postcss@8.5.1)
@@ -712,6 +715,9 @@ packages:
     resolution: {integrity: sha512-lrW200hZdbfRtztbygyaq/6jP6AKE8qQN2KvPcJ+x7wiD038YtnYtZ82IMNJ69GJibV7bwL3y9FgK+5w/pYt6g==}
     cpu: [x64]
     os: [win32]
+
+  '@yandex/ymaps3-default-ui-theme@0.0.24':
+    resolution: {integrity: sha512-75ukFfADLE0XbVcgq661kF+bgfIlMfD30dqxrwFgL2nbNcZRQhxwq/YeqalbKZkEbd+/D6l7iKLgHzR8b4PQFA==}
 
   '@yandex/ymaps3-types@1.0.18650382':
     resolution: {integrity: sha512-1GDLd21yiZWataQnlN3ycywKPUupxI+8pASuG08o1avXJqlO6gIaj8JLqQaWw2XxN95w8hLwvUrB/3gNYye1Jw==}
@@ -3027,6 +3033,8 @@ snapshots:
 
   '@unrs/resolver-binding-win32-x64-msvc@1.11.1':
     optional: true
+
+  '@yandex/ymaps3-default-ui-theme@0.0.24': {}
 
   '@yandex/ymaps3-types@1.0.18650382(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)':
     optionalDependencies:

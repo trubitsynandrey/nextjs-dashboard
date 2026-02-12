@@ -3,7 +3,8 @@
 import { useEffect, useState } from 'react';
 import Script from 'next/script';
 import { loadYmaps3React } from '@/app/lib/ymaps';
-import type { LngLat } from 'ymaps3';
+import type { LngLat, SearchResponse } from 'ymaps3';
+import { YMapSearchControl } from '@yandex/ymaps3-default-ui-theme';
 
 const DEFAULT_CENTER: LngLat = [37.588144, 55.733842];
 
@@ -106,7 +107,7 @@ function YMapShell({
   center: LngLat;
   zoom: number;
 }) {
-  const { reactify, YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapMarker } =
+  const { reactify, YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapMarker, YMapSearchControl } =
     api;
   const location = { center, zoom };
 
@@ -114,6 +115,9 @@ function YMapShell({
     <YMap className="h-full w-full" location={reactify.useDefault(location, [location])}>
       <YMapDefaultSchemeLayer />
       <YMapDefaultFeaturesLayer />
+      <YMapSearchControl searchResult={function (result: SearchResponse) {
+        console.log(result, 'RESULT FOR SEARCH CONTROL')
+      }} />
       {center ? (
         <YMapMarker coordinates={reactify.useDefault(center, [center])}>
           <span

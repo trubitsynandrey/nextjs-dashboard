@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 import type { Reactify } from 'ymaps3/reactify';
+import defaultUiTheme from '@yandex/ymaps3-default-ui-theme';
 
 type YMaps3ReactifyModule = typeof import('ymaps3/reactify');
 
@@ -14,8 +15,12 @@ export async function loadYmaps3React() {
     ymaps3.ready,
   ]);
 
+
   const typedReactifyModule = ymaps3React as YMaps3ReactifyModule;
   const reactify = typedReactifyModule.reactify.bindTo(React, ReactDom) as Reactify;
+  const { YMapDefaultMarker, YMapSearchControl } = reactify.module(
+    defaultUiTheme
+  );
   const { YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapMarker } =
     reactify.module(ymaps3);
 
@@ -25,5 +30,6 @@ export async function loadYmaps3React() {
     YMapDefaultSchemeLayer,
     YMapDefaultFeaturesLayer,
     YMapMarker,
+    YMapSearchControl
   };
 }
