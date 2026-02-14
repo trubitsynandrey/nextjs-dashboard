@@ -17,9 +17,9 @@ export async function authenticate(
     if (error instanceof AuthError) {
       switch (error.type) {
         case 'CredentialsSignin':
-          return 'Invalid credentials.';
+          return 'authInvalidCredentials';
         default:
-          return 'Something went wrong.';
+          return 'authGeneric';
       }
     }
     throw error;
@@ -36,9 +36,9 @@ export type RegisterState = {
 };
 
 const RegisterSchema = z.object({
-  name: z.string().min(1, { message: 'Please enter your name.' }),
-  email: z.string().email({ message: 'Please enter a valid email.' }),
-  password: z.string().min(6, { message: 'Password must be at least 6 characters.' }),
+  name: z.string().min(1, { message: 'registerNameRequired' }),
+  email: z.string().email({ message: 'registerEmailInvalid' }),
+  password: z.string().min(6, { message: 'registerPasswordMin' }),
 });
 
 export async function register(
@@ -54,7 +54,7 @@ export async function register(
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Missing fields. Failed to create account.',
+      message: 'registerMissingFields',
     };
   }
 
@@ -65,7 +65,7 @@ export async function register(
       SELECT id FROM users WHERE email = ${email}
     `;
     if (existing.length > 0) {
-      return { message: 'Email is already registered.' };
+      return { message: 'registerEmailExists' };
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -76,7 +76,7 @@ export async function register(
     `;
   } catch (error) {
     console.error('Database Error:', error);
-    return { message: 'Database Error: Failed to create account.' };
+    return { message: 'registerDb' };
   }
 
   redirect('/login');

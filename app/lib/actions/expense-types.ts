@@ -24,14 +24,14 @@ export type ExpenseTypeFormAction = (
 ) => Promise<ExpenseTypeFormState>;
 
 const ExpenseTypeSchema = z.object({
-  name: z.string().min(1, { message: 'Please enter a name.' }),
+  name: z.string().min(1, { message: 'expenseTypeNameRequired' }),
   color: z
     .string()
-    .regex(/^#[0-9A-Fa-f]{6}$/, { message: 'Please choose a valid hex color.' }),
+    .regex(/^#[0-9A-Fa-f]{6}$/, { message: 'expenseTypeColorInvalid' }),
   description: z.string().optional(),
   limitMonthSpent: z.preprocess(
     (value) => (value === '' || value === null ? undefined : value),
-    z.coerce.number().positive({ message: 'Limit must be greater than 0.' }).optional(),
+    z.coerce.number().positive({ message: 'expenseTypeLimitPositive' }).optional(),
   ),
 });
 
@@ -50,7 +50,7 @@ export async function createExpenseType(
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Missing Fields. Failed to Create Expense Type.',
+      message: 'expenseTypeMissingCreate',
     };
   }
 
@@ -67,17 +67,17 @@ export async function createExpenseType(
   } catch (error: any) {
     if (error?.code === '23505') {
       return {
-        errors: { name: ['An expense type with this name already exists.'] },
-        message: 'Duplicate name. Failed to Create Expense Type.',
+        errors: { name: ['expenseTypeNameExists'] },
+        message: 'expenseTypeDuplicateName',
       };
     }
     console.error('Database Error:', error);
-    return { message: 'Database Error: Failed to Create Expense Type.' };
+    return { message: 'expenseTypeDbCreate' };
   }
 
-  revalidatePath('/dashboard/type-of-expenses');
-  revalidatePath('/dashboard/expenses');
-  redirect('/dashboard/type-of-expenses');
+  revalidatePath('/type-of-expenses');
+  revalidatePath('/expenses');
+  redirect('/type-of-expenses');
 }
 
 export async function updateExpenseType(
@@ -96,7 +96,7 @@ export async function updateExpenseType(
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Missing Fields. Failed to Update Expense Type.',
+      message: 'expenseTypeMissingUpdate',
     };
   }
 
@@ -114,17 +114,17 @@ export async function updateExpenseType(
   } catch (error: any) {
     if (error?.code === '23505') {
       return {
-        errors: { name: ['An expense type with this name already exists.'] },
-        message: 'Duplicate name. Failed to Update Expense Type.',
+        errors: { name: ['expenseTypeNameExists'] },
+        message: 'expenseTypeDuplicateNameUpdate',
       };
     }
     console.error('Database Error:', error);
-    return { message: 'Database Error: Failed to Update Expense Type.' };
+    return { message: 'expenseTypeDbUpdate' };
   }
 
-  revalidatePath('/dashboard/type-of-expenses');
-  revalidatePath('/dashboard/expenses');
-  redirect('/dashboard/type-of-expenses');
+  revalidatePath('/type-of-expenses');
+  revalidatePath('/expenses');
+  redirect('/type-of-expenses');
 }
 
 export async function deleteExpenseType(
@@ -136,9 +136,9 @@ export async function deleteExpenseType(
     await sql`DELETE FROM type_of_expenses WHERE id = ${id} AND user_id = ${userId}`;
   } catch (error) {
     console.error('Database Error:', error);
-    return { message: 'Database Error: Failed to Delete Expense Type.' };
+    return { message: 'expenseTypeDbDelete' };
   }
 
-  revalidatePath('/dashboard/type-of-expenses');
+  revalidatePath('/type-of-expenses');
   return { message: null };
 }

@@ -1,13 +1,15 @@
 import { GlobeAltIcon } from '@heroicons/react/24/outline';
 import { lusitana } from '@/app/ui/fonts';
+import { getTranslations } from 'next-intl/server';
 
-export default function AcmeLogo() {
+export default async function AcmeLogo() {
+  const tBrand = await getTranslations('Brand');
+
   return (
     <div
       className={`${lusitana.className} flex flex-row items-center leading-none text-white`}
     >
-      <GlobeAltIcon className="h-12 w-12 rotate-[15deg]" />
-      <p className="text-[44px]">Expenses app</p>
+      <p className="text-[24px]">{tBrand('appName')}</p>
     </div>
   );
 }

@@ -1,0 +1,152 @@
+{
+  "Nav": {
+    "expenses": "Gastos",
+    "expenseTypes": "Tipos de gasto"
+  },
+  "Auth": {
+    "signOut": "Cerrar sesión",
+    "loginHeading": "Por favor, inicia sesión para continuar.",
+    "email": "Correo",
+    "emailPlaceholder": "Introduce tu correo",
+    "password": "Contraseña",
+    "passwordPlaceholder": "Introduce la contraseña",
+    "login": "Iniciar sesión",
+    "newHere": "¿Nuevo aquí?",
+    "createAccount": "Crear una cuenta",
+    "registerHeading": "Crea tu cuenta.",
+    "name": "Nombre",
+    "namePlaceholder": "Introduce tu nombre",
+    "register": "Registrarse",
+    "alreadyHaveAccount": "¿Ya tienes una cuenta?"
+  },
+  "Locale": {
+    "english": "Inglés",
+    "russian": "Ruso",
+    "spanish": "Español",
+    "label": "Idioma"
+  },
+  "Common": {
+    "search": "Buscar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "actions": "Acciones",
+    "goBack": "Volver",
+    "prev": "Anterior",
+    "next": "Siguiente",
+    "noNote": "Sin nota",
+    "income": "Ingreso",
+    "expense": "Gasto",
+    "saveChanges": "Guardar cambios",
+    "tryAgain": "Intentar de nuevo"
+  },
+  "Brand": {
+    "appName": "Aplicación de gastos"
+  },
+  "Breadcrumbs": {
+    "label": "Migas de pan"
+  },
+  "Errors": {
+    "authInvalidCredentials": "Credenciales inválidas.",
+    "authGeneric": "Algo salió mal.",
+    "registerNameRequired": "Por favor, introduce tu nombre.",
+    "registerEmailInvalid": "Por favor, introduce un correo válido.",
+    "registerPasswordMin": "La contraseña debe tener al menos 6 caracteres.",
+    "registerMissingFields": "Faltan campos. No se pudo crear la cuenta.",
+    "registerEmailExists": "El correo ya está registrado.",
+    "registerDb": "Error de base de datos: no se pudo crear la cuenta.",
+    "expenseAmountGtZero": "Introduce un monto mayor que 0.",
+    "expenseSelectType": "Selecciona un tipo de gasto.",
+    "expenseMissingCreate": "Faltan campos. No se pudo crear el gasto.",
+    "expenseDbCreate": "Error de base de datos: no se pudo crear el gasto.",
+    "expenseMissingUpdate": "Faltan campos. No se pudo actualizar el gasto.",
+    "expenseDbUpdate": "Error de base de datos: no se pudo actualizar el gasto.",
+    "expenseDbDelete": "Error de base de datos: no se pudo eliminar el gasto.",
+    "expenseTypeNameRequired": "Por favor, introduce un nombre.",
+    "expenseTypeColorInvalid": "Elige un color HEX válido.",
+    "expenseTypeLimitPositive": "El límite debe ser mayor que 0.",
+    "expenseTypeMissingCreate": "Faltan campos. No se pudo crear el tipo de gasto.",
+    "expenseTypeDuplicateName": "Nombre duplicado. No se pudo crear el tipo de gasto.",
+    "expenseTypeNameExists": "Ya existe un tipo de gasto con ese nombre.",
+    "expenseTypeDbCreate": "Error de base de datos: no se pudo crear el tipo de gasto.",
+    "expenseTypeMissingUpdate": "Faltan campos. No se pudo actualizar el tipo de gasto.",
+    "expenseTypeDuplicateNameUpdate": "Nombre duplicado. No se pudo actualizar el tipo de gasto.",
+    "expenseTypeDbUpdate": "Error de base de datos: no se pudo actualizar el tipo de gasto.",
+    "expenseTypeDbDelete": "Error de base de datos: no se pudo eliminar el tipo de gasto."
+  },
+  "Expenses": {
+    "title": "Gastos",
+    "totalExpenses": "Total de gastos (RUB)",
+    "totalIncome": "Total de ingresos (RUB)",
+    "create": "Crear gasto",
+    "edit": "Editar gasto",
+    "deleteConfirmTitle": "¿Eliminar gasto?",
+    "deleteConfirmBody": "Este gasto se eliminará permanentemente de la base de datos.",
+    "table": {
+      "summary": "Tabla de gastos",
+      "noExpenses": "No se encontraron gastos. Crea uno para empezar.",
+      "amount": "Monto",
+      "type": "Tipo",
+      "spentAt": "Fecha",
+      "note": "Nota",
+      "category": "Categoría"
+    },
+    "form": {
+      "amount": "Monto",
+      "amountPlaceholder": "Introduce el monto",
+      "expenseType": "Tipo de gasto",
+      "selectType": "Selecciona un tipo",
+      "spentAt": "Fecha",
+      "noteOptional": "Nota (opcional)",
+      "notePlaceholder": "Agrega una nota breve",
+      "markIncome": "Marcar como ingreso"
+    },
+    "limits": {
+      "title": "Límites mensuales",
+      "ariaLabel": "{name} {percent}% del límite mensual",
+      "percentUsed": "{percent}% usado",
+      "showExpenses": "Mostrar gastos ({count})",
+      "noExpensesYet": "Aún no hay gastos"
+    },
+    "breakdown": {
+      "title": "Distribución de gastos",
+      "topCategory": "Categoría principal:",
+      "noExpensesMonth": "Aún no hay gastos este mes."
+    }
+  },
+  "ExpenseTypes": {
+    "title": "Tipos de gasto",
+    "create": "Crear tipo de gasto",
+    "edit": "Editar tipo de gasto",
+    "deleteConfirmTitle": "¿Eliminar tipo de gasto?",
+    "deleteConfirmBody": "\"{name}\" se eliminará permanentemente de la base de datos.",
+    "table": {
+      "noItems": "No se encontraron tipos de gasto. Crea uno para empezar.",
+      "name": "Nombre",
+      "color": "Color",
+      "description": "Descripción",
+      "monthlyLimit": "Límite mensual",
+      "noDescription": "Sin descripción",
+      "colorLabel": "Color {color}",
+      "limit": "Límite: {value}"
+    },
+    "form": {
+      "name": "Nombre",
+      "namePlaceholder": "Introduce el nombre del tipo",
+      "monthlyLimitOptional": "Límite mensual (opcional)",
+      "monthlyLimitPlaceholder": "Introduce el límite mensual",
+      "color": "Color",
+      "descriptionOptional": "Descripción (opcional)",
+      "descriptionPlaceholder": "Agrega una breve descripción"
+    }
+  },
+  "Meta": {
+    "titleTemplate": "%s | Panel Acme",
+    "defaultTitle": "Panel Acme",
+    "description": "El panel oficial del curso Next.js Learn, construido con App Router."
+  },
+  "NotFound": {
+    "title": "404 No encontrado",
+    "expense": "No se pudo encontrar el gasto solicitado.",
+    "expenseType": "No se pudo encontrar el tipo de gasto solicitado."
+  }
+}

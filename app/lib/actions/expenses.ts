@@ -25,8 +25,8 @@ export type ExpenseFormAction = (
 ) => Promise<ExpenseFormState>;
 
 const ExpenseSchema = z.object({
-  amount: z.coerce.number().gt(0, { message: 'Please enter an amount greater than 0.' }),
-  expenseTypeId: z.string().min(1, { message: 'Please select an expense type.' }),
+  amount: z.coerce.number().gt(0, { message: 'expenseAmountGtZero' }),
+  expenseTypeId: z.string().min(1, { message: 'expenseSelectType' }),
   spentAt: z.string().optional(),
   note: z.string().optional(),
   isIncome: z.boolean(),
@@ -55,7 +55,7 @@ export async function createExpense(
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Missing Fields. Failed to Create Expense.',
+      message: 'expenseMissingCreate',
     };
   }
 
@@ -78,11 +78,11 @@ export async function createExpense(
     }
   } catch (error) {
     console.error('Database Error:', error);
-    return { message: 'Database Error: Failed to Create Expense.' };
+    return { message: 'expenseDbCreate' };
   }
 
-  revalidatePath('/dashboard/expenses');
-  redirect('/dashboard/expenses');
+  revalidatePath('/expenses');
+  redirect('/expenses');
 }
 
 export async function updateExpense(
@@ -102,7 +102,7 @@ export async function updateExpense(
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Missing Fields. Failed to Update Expense.',
+      message: 'expenseMissingUpdate',
     };
   }
 
@@ -127,11 +127,11 @@ export async function updateExpense(
     }
   } catch (error) {
     console.error('Database Error:', error);
-    return { message: 'Database Error: Failed to Update Expense.' };
+    return { message: 'expenseDbUpdate' };
   }
 
-  revalidatePath('/dashboard/expenses');
-  redirect('/dashboard/expenses');
+  revalidatePath('/expenses');
+  redirect('/expenses');
 }
 
 export async function deleteExpense(
@@ -143,9 +143,9 @@ export async function deleteExpense(
     await sql`DELETE FROM expenses WHERE id = ${id} AND user_id = ${userId}`;
   } catch (error) {
     console.error('Database Error:', error);
-    return { message: 'Database Error: Failed to Delete Expense.' };
+    return { message: 'expenseDbDelete' };
   }
 
-  revalidatePath('/dashboard/expenses');
+  revalidatePath('/expenses');
   return { message: null };
 }

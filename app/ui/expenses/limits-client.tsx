@@ -4,6 +4,8 @@ import { useMemo } from 'react';
 import { formatDateToLocal } from '@/app/lib/utils';
 import { ExpenseWithType } from '@/app/lib/definitions';
 import { groupExpensesByType } from '@/app/ui/expenses/expense-utils';
+import { useLocale, useTranslations } from 'next-intl';
+import { toIntlLocale } from '@/i18n/locale';
 
 type LimitRow = {
   expense_type_id: string;
@@ -13,13 +15,6 @@ type LimitRow = {
   spent: number;
 };
 
-const formatRub = (amount: number) =>
-  amount.toLocaleString('ru-RU', {
-    style: 'currency',
-    currency: 'RUB',
-    maximumFractionDigits: 2,
-  });
-
 export default function ExpenseLimitsClient({
   limits,
   expenses,
@@ -27,7 +22,17 @@ export default function ExpenseLimitsClient({
   limits: LimitRow[];
   expenses: ExpenseWithType[];
 }) {
+  const locale = useLocale();
+  const intlLocale = toIntlLocale(locale);
+  const tCommon = useTranslations('Common');
+  const tExpenses = useTranslations('Expenses');
   const expensesByType = useMemo(() => groupExpensesByType(expenses), [expenses]);
+  const formatRub = (amount: number) =>
+    amount.toLocaleString(intlLocale, {
+      style: 'currency',
+      currency: 'RUB',
+      maximumFractionDigits: 2,
+    });
 
   return (
     <details
@@ -35,7 +40,7 @@ export default function ExpenseLimitsClient({
       className="mt-6 rounded-xl bg-gray-50 p-4 shadow-sm open:shadow-sm"
     >
       <summary className="cursor-pointer select-none rounded-md px-2 py-1 text-sm font-medium text-gray-700">
-        Monthly Limits
+        {tExpenses('limits.title')}
       </summary>
       <div className="mt-4 grid gap-4">
         {limits.map((limit) => {
@@ -64,15 +69,17 @@ export default function ExpenseLimitsClient({
                 <div
                   className="h-2 rounded-full"
                   style={{ width: `${percent}%`, backgroundColor: limit.color }}
-                  aria-label={`${limit.name} ${percent}% of monthly limit`}
+                  aria-label={tExpenses('limits.ariaLabel', { name: limit.name, percent })}
                 />
               </div>
-              <div className="mt-2 text-xs text-gray-500">{percent}% used</div>
+              <div className="mt-2 text-xs text-gray-500">
+                {tExpenses('limits.percentUsed', { percent })}
+              </div>
               <details className="mt-3 rounded-md border border-gray-100 bg-gray-50/60 px-3 py-2">
                 <summary className="cursor-pointer select-none text-xs font-medium text-gray-600">
                   {limitExpenses.length
-                    ? `Show expenses (${limitExpenses.length})`
-                    : 'No expenses yet'}
+                    ? tExpenses('limits.showExpenses', { count: limitExpenses.length })
+                    : tExpenses('limits.noExpensesYet')}
                 </summary>
                 {limitExpenses.length ? (
                   <div className="mt-3 space-y-2">
@@ -86,10 +93,10 @@ export default function ExpenseLimitsClient({
                             {formatRub(expense.amount)}
                           </div>
                           <div className="text-gray-500">
-                            {formatDateToLocal(expense.spent_at)}
+                            {formatDateToLocal(expense.spent_at, intlLocale)}
                           </div>
                           <div className="truncate text-gray-600">
-                            {expense.note || 'No note'}
+                            {expense.note || tCommon('noNote')}
                           </div>
                         </div>
                         <div className="shrink-0 text-right text-gray-500">

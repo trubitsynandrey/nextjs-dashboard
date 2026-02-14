@@ -5,12 +5,16 @@ import ExpenseForm from '@/app/ui/expenses/form';
 import { fetchExpenseById } from '@/app/lib/data/expenses';
 import { fetchExpenseTypeOptions } from '@/app/lib/data/expense-types';
 import { updateExpense } from '@/app/lib/actions/expenses';
+import { getTranslations } from 'next-intl/server';
 
-export const metadata: Metadata = {
-  title: 'Edit Expense',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const tExpenses = await getTranslations('Expenses');
+  return { title: tExpenses('edit') };
+}
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
+  const tCommon = await getTranslations('Common');
+  const tExpenses = await getTranslations('Expenses');
   const params = await props.params;
   const id = params.id;
   const [expense, expenseTypes] = await Promise.all([
@@ -28,10 +32,10 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
     <main>
       <Breadcrumbs
         breadcrumbs={[
-          { label: 'Expenses', href: '/dashboard/expenses' },
+          { label: tExpenses('title'), href: '/expenses' },
           {
-            label: 'Edit Expense',
-            href: `/dashboard/expenses/${id}/edit`,
+            label: tExpenses('edit'),
+            href: `/expenses/${id}/edit`,
             active: true,
           },
         ]}
@@ -40,8 +44,8 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
         action={updateExpenseWithId}
         expenseTypes={expenseTypes}
         initialData={expense}
-        submitLabel="Save Changes"
-        cancelHref="/dashboard/expenses"
+        submitLabel={tCommon('saveChanges')}
+        cancelHref="/expenses"
       />
     </main>
   );

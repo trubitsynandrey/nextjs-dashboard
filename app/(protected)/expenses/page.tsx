@@ -9,11 +9,13 @@ import { Card } from '@/app/ui/dashboard/cards';
 import { fetchExpenses, fetchMonthlyExpenseTotal, fetchMonthlyIncomeTotal } from '@/app/lib/data/expenses';
 import ExpenseLimits from '@/app/ui/expenses/limits';
 import ExpenseBreakdownClient from '@/app/ui/expenses/breakdown-client';
+import { getLocale, getTranslations } from 'next-intl/server';
+import { toIntlLocale } from '@/i18n/locale';
 
-export const metadata: Metadata = {
-  title: 'Expenses',
-};
-
+export async function generateMetadata(): Promise<Metadata> {
+  const tExpenses = await getTranslations('Expenses');
+  return { title: tExpenses('title') };
+}
 
 function parseMonth(value: string | undefined) {
   if (!value || !/^\d{4}-\d{2}$/.test(value)) {
@@ -30,13 +32,18 @@ function buildMonthKey(year: number, month: number) {
   return `${year}-${String(month).padStart(2, '0')}`;
 }
 
-function monthLabel(date: Date) {
-  return date.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+function monthLabel(date: Date, locale: string) {
+  return date.toLocaleString(locale, { month: 'long', year: 'numeric' });
 }
 
 export default async function Page(props: {
   searchParams?: Promise<{ month?: string }>;
 }) {
+  const locale = await getLocale();
+  const intlLocale = toIntlLocale(locale);
+  const tCommon = await getTranslations('Common');
+  const tExpenses = await getTranslations('Expenses');
+
   const searchParams = await props.searchParams;
   const parsed = parseMonth(searchParams?.month);
   const now = new Date();
@@ -50,12 +57,12 @@ export default async function Page(props: {
   const nextMonthKey = buildMonthKey(nextMonthDate.getUTCFullYear(), nextMonthDate.getUTCMonth() + 1);
 
   const monthlyTotal = await fetchMonthlyExpenseTotal(monthStart.toISOString(), monthEnd.toISOString());
-  const formattedMonthlyExpenseTotal = monthlyTotal.toLocaleString('ru-RU', {
+  const formattedMonthlyExpenseTotal = monthlyTotal.toLocaleString(intlLocale, {
     style: 'currency',
     currency: 'RUB',
   });
   const monthlyIncomeTotal = await fetchMonthlyIncomeTotal(monthStart.toISOString(), monthEnd.toISOString());
-  const formattedMonthlyIncomeTotal = monthlyIncomeTotal.toLocaleString('ru-RU', {
+  const formattedMonthlyIncomeTotal = monthlyIncomeTotal.toLocaleString(intlLocale, {
     style: 'currency',
     currency: 'RUB',
   });
@@ -63,36 +70,38 @@ export default async function Page(props: {
 
   return (
     <div className="w-full">
-      <h1 className={`${lusitana.className} text-2xl`}>Expenses</h1>
+      <h1 className={`${lusitana.className} text-2xl`}>{tExpenses('title')}</h1>
       <div className="mt-4 flex w-full flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-2">
           <CreateExpense />
         </div>
         <div className="flex items-center gap-2 text-sm text-gray-600">
           <Link
-            href={`/dashboard/expenses?month=${prevMonthKey}`}
+            href={`/expenses?month=${prevMonthKey}`}
             className="rounded-md border px-3 py-1.5 text-sm hover:bg-gray-50"
           >
-            Prev
+            {tCommon('prev')}
           </Link>
-          <span className="font-medium text-gray-900">{monthLabel(monthStart)}</span>
+          <span className="font-medium text-gray-900">
+            {monthLabel(monthStart, intlLocale)}
+          </span>
           <Link
-            href={`/dashboard/expenses?month=${nextMonthKey}`}
+            href={`/expenses?month=${nextMonthKey}`}
             className="rounded-md border px-3 py-1.5 text-sm hover:bg-gray-50"
           >
-            Next
+            {tCommon('next')}
           </Link>
         </div>
       </div>
       <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         <Card
-          title="Total Expenses (RUB)"
+          title={tExpenses('totalExpenses')}
           value={formattedMonthlyExpenseTotal}
           type="expenses"
           rootClassName="h-fit"
         />
         <Card
-          title="Total Income (RUB)"
+          title={tExpenses('totalIncome')}
           value={formattedMonthlyIncomeTotal}
           type="expenses"
           rootClassName="h-fit"

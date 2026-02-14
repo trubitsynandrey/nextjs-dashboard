@@ -1,13 +1,16 @@
 import { fetchExpenseTypes } from '@/app/lib/data/expense-types';
 import { DeleteExpenseType, UpdateExpenseType } from '@/app/ui/type-of-expenses/buttons';
+import { getTranslations } from 'next-intl/server';
 
 export default async function ExpenseTypesTable() {
+  const tCommon = await getTranslations('Common');
+  const tExpenseTypes = await getTranslations('ExpenseTypes');
   const expenseTypes = await fetchExpenseTypes();
 
   if (!expenseTypes.length) {
     return (
       <div className="mt-6 rounded-lg bg-gray-50 p-6 text-center text-sm text-gray-600">
-        No expense types found. Create one to get started.
+        {tExpenseTypes('table.noItems')}
       </div>
     );
   }
@@ -28,18 +31,18 @@ export default async function ExpenseTypesTable() {
                       {expenseType.name}
                     </p>
                     <p className="text-sm text-gray-500">
-                      {expenseType.description || 'No description'}
+                      {expenseType.description || tExpenseTypes('table.noDescription')}
                     </p>
                   </div>
                   <span
                     className="h-4 w-4 rounded-full border border-gray-200"
                     style={{ backgroundColor: expenseType.color }}
-                    aria-label={`Color ${expenseType.color}`}
+                    aria-label={tExpenseTypes('table.colorLabel', { color: expenseType.color })}
                   />
                 </div>
                 <div className="flex w-full items-center justify-between pt-4">
                   <p className="text-sm text-gray-500">
-                    Limit: {expenseType.limit_month_spent ?? '—'}
+                    {tExpenseTypes('table.limit', { value: expenseType.limit_month_spent ?? '—' })}
                   </p>
                   <div className="flex justify-end gap-2">
                     <UpdateExpenseType id={expenseType.id} />
@@ -53,19 +56,19 @@ export default async function ExpenseTypesTable() {
             <thead className="rounded-lg text-left text-sm font-normal">
               <tr>
                 <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
-                  Name
+                  {tExpenseTypes('table.name')}
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Color
+                  {tExpenseTypes('table.color')}
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Description
+                  {tExpenseTypes('table.description')}
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Monthly Limit
+                  {tExpenseTypes('table.monthlyLimit')}
                 </th>
                 <th scope="col" className="relative py-3 pl-6 pr-3">
-                  <span className="sr-only">Actions</span>
+                  <span className="sr-only">{tCommon('actions')}</span>
                 </th>
               </tr>
             </thead>
@@ -82,11 +85,11 @@ export default async function ExpenseTypesTable() {
                     <span
                       className="inline-flex h-5 w-5 rounded-full border border-gray-200"
                       style={{ backgroundColor: expenseType.color }}
-                      aria-label={`Color ${expenseType.color}`}
+                      aria-label={tExpenseTypes('table.colorLabel', { color: expenseType.color })}
                     />
                   </td>
                   <td className="whitespace-nowrap px-3 py-3 text-gray-600">
-                    {expenseType.description || 'No description'}
+                    {expenseType.description || tExpenseTypes('table.noDescription')}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3 text-gray-600">
                     {expenseType.limit_month_spent ?? '—'}

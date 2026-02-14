@@ -1,7 +1,12 @@
+import { getTranslations } from 'next-intl/server';
+
 const shimmer =
   'before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/60 before:to-transparent';
 
-export default function ExpenseTypesTableSkeleton() {
+export default async function ExpenseTypesTableSkeleton() {
+  const tCommon = await getTranslations('Common');
+  const tExpenseTypes = await getTranslations('ExpenseTypes');
+
   return (
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
@@ -33,19 +38,19 @@ export default function ExpenseTypesTableSkeleton() {
             <thead className="rounded-lg text-left text-sm font-normal">
               <tr>
                 <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
-                  Name
+                  {tExpenseTypes('table.name')}
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Color
+                  {tExpenseTypes('table.color')}
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Description
+                  {tExpenseTypes('table.description')}
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Monthly Limit
+                  {tExpenseTypes('table.monthlyLimit')}
                 </th>
                 <th scope="col" className="relative py-3 pl-6 pr-3">
-                  <span className="sr-only">Actions</span>
+                  <span className="sr-only">{tCommon('actions')}</span>
                 </th>
               </tr>
             </thead>

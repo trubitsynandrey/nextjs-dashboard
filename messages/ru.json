@@ -1,0 +1,152 @@
+{
+  "Nav": {
+    "expenses": "Расходы",
+    "expenseTypes": "Типы расходов"
+  },
+  "Auth": {
+    "signOut": "Выйти",
+    "loginHeading": "Пожалуйста, войдите, чтобы продолжить.",
+    "email": "Email",
+    "emailPlaceholder": "Введите адрес email",
+    "password": "Пароль",
+    "passwordPlaceholder": "Введите пароль",
+    "login": "Войти",
+    "newHere": "Впервые здесь?",
+    "createAccount": "Создать аккаунт",
+    "registerHeading": "Создайте аккаунт.",
+    "name": "Имя",
+    "namePlaceholder": "Введите имя",
+    "register": "Зарегистрироваться",
+    "alreadyHaveAccount": "Уже есть аккаунт?"
+  },
+  "Locale": {
+    "english": "Английский",
+    "russian": "Русский",
+    "spanish": "Испанский",
+    "label": "Язык"
+  },
+  "Common": {
+    "search": "Поиск",
+    "cancel": "Отмена",
+    "delete": "Удалить",
+    "actions": "Действия",
+    "goBack": "Назад",
+    "prev": "Пред",
+    "next": "След",
+    "noNote": "Без заметки",
+    "income": "Доход",
+    "expense": "Расход",
+    "saveChanges": "Сохранить изменения",
+    "tryAgain": "Попробовать снова"
+  },
+  "Brand": {
+    "appName": "Приложение расходов"
+  },
+  "Breadcrumbs": {
+    "label": "Навигация"
+  },
+  "Errors": {
+    "authInvalidCredentials": "Неверные учетные данные.",
+    "authGeneric": "Что-то пошло не так.",
+    "registerNameRequired": "Пожалуйста, введите имя.",
+    "registerEmailInvalid": "Пожалуйста, введите корректный email.",
+    "registerPasswordMin": "Пароль должен содержать минимум 6 символов.",
+    "registerMissingFields": "Не заполнены обязательные поля. Не удалось создать аккаунт.",
+    "registerEmailExists": "Этот email уже зарегистрирован.",
+    "registerDb": "Ошибка базы данных: не удалось создать аккаунт.",
+    "expenseAmountGtZero": "Введите сумму больше 0.",
+    "expenseSelectType": "Выберите тип расхода.",
+    "expenseMissingCreate": "Не заполнены обязательные поля. Не удалось создать расход.",
+    "expenseDbCreate": "Ошибка базы данных: не удалось создать расход.",
+    "expenseMissingUpdate": "Не заполнены обязательные поля. Не удалось обновить расход.",
+    "expenseDbUpdate": "Ошибка базы данных: не удалось обновить расход.",
+    "expenseDbDelete": "Ошибка базы данных: не удалось удалить расход.",
+    "expenseTypeNameRequired": "Пожалуйста, введите название.",
+    "expenseTypeColorInvalid": "Выберите корректный HEX-цвет.",
+    "expenseTypeLimitPositive": "Лимит должен быть больше 0.",
+    "expenseTypeMissingCreate": "Не заполнены обязательные поля. Не удалось создать тип расхода.",
+    "expenseTypeDuplicateName": "Дублирующееся название. Не удалось создать тип расхода.",
+    "expenseTypeNameExists": "Тип расхода с таким названием уже существует.",
+    "expenseTypeDbCreate": "Ошибка базы данных: не удалось создать тип расхода.",
+    "expenseTypeMissingUpdate": "Не заполнены обязательные поля. Не удалось обновить тип расхода.",
+    "expenseTypeDuplicateNameUpdate": "Дублирующееся название. Не удалось обновить тип расхода.",
+    "expenseTypeDbUpdate": "Ошибка базы данных: не удалось обновить тип расхода.",
+    "expenseTypeDbDelete": "Ошибка базы данных: не удалось удалить тип расхода."
+  },
+  "Expenses": {
+    "title": "Расходы",
+    "totalExpenses": "Всего расходов (RUB)",
+    "totalIncome": "Всего доходов (RUB)",
+    "create": "Создать расход",
+    "edit": "Редактировать расход",
+    "deleteConfirmTitle": "Удалить расход?",
+    "deleteConfirmBody": "Этот расход будет безвозвратно удален из базы данных.",
+    "table": {
+      "summary": "Таблица расходов",
+      "noExpenses": "Расходы не найдены. Создайте первый, чтобы начать.",
+      "amount": "Сумма",
+      "type": "Тип",
+      "spentAt": "Дата",
+      "note": "Заметка",
+      "category": "Категория"
+    },
+    "form": {
+      "amount": "Сумма",
+      "amountPlaceholder": "Введите сумму",
+      "expenseType": "Тип расхода",
+      "selectType": "Выберите тип",
+      "spentAt": "Дата",
+      "noteOptional": "Заметка (необязательно)",
+      "notePlaceholder": "Добавьте короткую заметку",
+      "markIncome": "Отметить как доход"
+    },
+    "limits": {
+      "title": "Месячные лимиты",
+      "ariaLabel": "{name} {percent}% от месячного лимита",
+      "percentUsed": "Использовано {percent}%",
+      "showExpenses": "Показать расходы ({count})",
+      "noExpensesYet": "Расходов пока нет"
+    },
+    "breakdown": {
+      "title": "Доля расходов",
+      "topCategory": "Топ категория:",
+      "noExpensesMonth": "В этом месяце расходов пока нет."
+    }
+  },
+  "ExpenseTypes": {
+    "title": "Типы расходов",
+    "create": "Создать тип расхода",
+    "edit": "Редактировать тип расхода",
+    "deleteConfirmTitle": "Удалить тип расхода?",
+    "deleteConfirmBody": "\"{name}\" будет безвозвратно удален из базы данных.",
+    "table": {
+      "noItems": "Типы расходов не найдены. Создайте первый, чтобы начать.",
+      "name": "Название",
+      "color": "Цвет",
+      "description": "Описание",
+      "monthlyLimit": "Месячный лимит",
+      "noDescription": "Без описания",
+      "colorLabel": "Цвет {color}",
+      "limit": "Лимит: {value}"
+    },
+    "form": {
+      "name": "Название",
+      "namePlaceholder": "Введите название типа",
+      "monthlyLimitOptional": "Лимит расходов в месяц (необязательно)",
+      "monthlyLimitPlaceholder": "Введите месячный лимит",
+      "color": "Цвет",
+      "descriptionOptional": "Описание (необязательно)",
+      "descriptionPlaceholder": "Добавьте короткое описание"
+    }
+  },
+  "Meta": {
+    "titleTemplate": "%s | Панель Acme",
+    "defaultTitle": "Панель Acme",
+    "description": "Официальный дашборд курса Next.js Learn, созданный на App Router."
+  },
+  "NotFound": {
+    "title": "404 Не найдено",
+    "expense": "Не удалось найти запрошенный расход.",
+    "expenseType": "Не удалось найти запрошенный тип расхода."
+  }
+}

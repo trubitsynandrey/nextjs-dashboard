@@ -4,12 +4,16 @@ import Breadcrumbs from '@/app/ui/breadcrumbs';
 import ExpenseTypeForm from '@/app/ui/type-of-expenses/form';
 import { fetchExpenseTypeById } from '@/app/lib/data/expense-types';
 import { updateExpenseType } from '@/app/lib/actions/expense-types';
+import { getTranslations } from 'next-intl/server';
 
-export const metadata: Metadata = {
-  title: 'Edit Expense Type',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const tExpenseTypes = await getTranslations('ExpenseTypes');
+  return { title: tExpenseTypes('edit') };
+}
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
+  const tCommon = await getTranslations('Common');
+  const tExpenseTypes = await getTranslations('ExpenseTypes');
   const params = await props.params;
   const id = params.id;
   const expenseType = await fetchExpenseTypeById(id);
@@ -24,18 +28,18 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
     <main>
       <Breadcrumbs
         breadcrumbs={[
-          { label: 'Expense Types', href: '/dashboard/type-of-expenses' },
+          { label: tExpenseTypes('title'), href: '/type-of-expenses' },
           {
-            label: 'Edit Expense Type',
-            href: `/dashboard/type-of-expenses/${id}/edit`,
+            label: tExpenseTypes('edit'),
+            href: `/type-of-expenses/${id}/edit`,
             active: true,
           },
         ]}
       />
       <ExpenseTypeForm
         action={updateExpenseTypeWithId}
-        submitLabel="Save Changes"
-        cancelHref="/dashboard/type-of-expenses"
+        submitLabel={tCommon('saveChanges')}
+        cancelHref="/type-of-expenses"
         initialData={expenseType}
       />
     </main>

@@ -8,29 +8,35 @@ import {
 } from 'recharts';
 import { ExpenseWithType } from '@/app/lib/definitions';
 import { groupExpensesByType } from '@/app/ui/expenses/expense-utils';
-
-const formatRub = (amount: number) =>
-  amount.toLocaleString('ru-RU', {
-    style: 'currency',
-    currency: 'RUB',
-    maximumFractionDigits: 2,
-  });
+import { useLocale, useTranslations } from 'next-intl';
+import { toIntlLocale } from '@/i18n/locale';
 
 export default function ExpenseBreakdownClient({
   expenses,
 }: {
   expenses: ExpenseWithType[];
 }) {
+  const locale = useLocale();
+  const intlLocale = toIntlLocale(locale);
+  const tExpenses = useTranslations('Expenses');
   const items = Array.from(groupExpensesByType(expenses).values()).sort(
     (a, b) => b.spent - a.spent,
   );
   const total = items.reduce((sum, item) => sum + item.spent, 0);
   const topItem = items[0];
+  const formatRub = (amount: number) =>
+    amount.toLocaleString(intlLocale, {
+      style: 'currency',
+      currency: 'RUB',
+      maximumFractionDigits: 2,
+    });
 
   return (
     <div className="rounded-xl bg-gray-50 p-2 shadow-sm">
       <div className="flex items-center px-4 py-3">
-        <h3 className="text-sm font-medium text-gray-700">Expense Share</h3>
+        <h3 className="text-sm font-medium text-gray-700">
+          {tExpenses('breakdown.title')}
+        </h3>
       </div>
       <div className="rounded-xl bg-white px-4 py-4">
         {total > 0 ? (
@@ -72,7 +78,9 @@ export default function ExpenseBreakdownClient({
             </div>
             {topItem ? (
               <div className="rounded-lg bg-gray-50 px-3 py-2 text-xs text-gray-600">
-                <span className="font-medium text-gray-900">Top category:</span>{' '}
+                <span className="font-medium text-gray-900">
+                  {tExpenses('breakdown.topCategory')}
+                </span>{' '}
                 {topItem.name} ({Math.round((topItem.spent / total) * 100)}%) ·{' '}
                 {formatRub(topItem.spent)}
               </div>
@@ -80,7 +88,7 @@ export default function ExpenseBreakdownClient({
           </div>
         ) : (
           <div className="py-10 text-center text-sm text-gray-500">
-            No expenses yet for this month.
+            {tExpenses('breakdown.noExpensesMonth')}
           </div>
         )}
       </div>

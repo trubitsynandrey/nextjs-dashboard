@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useActionState } from 'react';
 import { Button } from '@/app/ui/button';
 import { ExpenseTypeFormAction, ExpenseTypeFormState } from '@/app/lib/actions/expense-types';
+import { useTranslations } from 'next-intl';
 
 export default function ExpenseTypeForm({
   action,
@@ -21,6 +22,9 @@ export default function ExpenseTypeForm({
   submitLabel: string;
   cancelHref: string;
 }) {
+  const tCommon = useTranslations('Common');
+  const tExpenseTypes = useTranslations('ExpenseTypes');
+  const tErrors = useTranslations('Errors');
   const initialState: ExpenseTypeFormState = { message: null, errors: {} };
   const [state, formAction] = useActionState(action, initialState);
 
@@ -29,7 +33,7 @@ export default function ExpenseTypeForm({
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         <div className="mb-4">
           <label htmlFor="name" className="mb-2 block text-sm font-medium">
-            Name
+            {tExpenseTypes('form.name')}
           </label>
           <input
             id="name"
@@ -37,14 +41,14 @@ export default function ExpenseTypeForm({
             type="text"
             required
             defaultValue={initialData?.name ?? ''}
-            placeholder="Enter expense type name"
+            placeholder={tExpenseTypes('form.namePlaceholder')}
             aria-describedby="name-error"
             className="peer block w-full rounded-md border border-gray-200 py-2 px-3 text-sm outline-2 placeholder:text-gray-500"
           />
           <div id="name-error" aria-live="polite" aria-atomic="true">
             {state.errors?.name?.map((error) => (
               <p className="mt-2 text-sm text-red-500" key={error}>
-                {error}
+                {tErrors(error)}
               </p>
             ))}
           </div>
@@ -52,7 +56,7 @@ export default function ExpenseTypeForm({
 
         <div className="mb-4">
           <label htmlFor="limit_month_spent" className="mb-2 block text-sm font-medium">
-            Monthly Spend Limit (optional)
+            {tExpenseTypes('form.monthlyLimitOptional')}
           </label>
           <input
             id="limit_month_spent"
@@ -61,14 +65,14 @@ export default function ExpenseTypeForm({
             step="0.01"
             min="0"
             defaultValue={initialData?.limit_month_spent ?? ''}
-            placeholder="Enter monthly limit"
+            placeholder={tExpenseTypes('form.monthlyLimitPlaceholder')}
             className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm outline-2 placeholder:text-gray-500"
           />
         </div>
 
         <div className="mb-4">
           <label htmlFor="color" className="mb-2 block text-sm font-medium">
-            Color
+            {tExpenseTypes('form.color')}
           </label>
           <div className="flex items-center gap-3">
             <input
@@ -84,7 +88,7 @@ export default function ExpenseTypeForm({
           <div id="color-error" aria-live="polite" aria-atomic="true">
             {state.errors?.color?.map((error) => (
               <p className="mt-2 text-sm text-red-500" key={error}>
-                {error}
+                {tErrors(error)}
               </p>
             ))}
           </div>
@@ -92,21 +96,21 @@ export default function ExpenseTypeForm({
 
         <div className="mb-4">
           <label htmlFor="description" className="mb-2 block text-sm font-medium">
-            Description (optional)
+            {tExpenseTypes('form.descriptionOptional')}
           </label>
           <textarea
             id="description"
             name="description"
             rows={3}
             defaultValue={initialData?.description ?? ''}
-            placeholder="Add a short description"
+            placeholder={tExpenseTypes('form.descriptionPlaceholder')}
             className="block w-full rounded-md border border-gray-200 p-3 text-sm outline-2 placeholder:text-gray-500"
           />
         </div>
 
         <div aria-live="polite" aria-atomic="true">
           {state.message ? (
-            <p className="mt-4 text-sm text-red-500">{state.message}</p>
+            <p className="mt-4 text-sm text-red-500">{tErrors(state.message)}</p>
           ) : null}
         </div>
       </div>
@@ -115,7 +119,7 @@ export default function ExpenseTypeForm({
           href={cancelHref}
           className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
         >
-          Cancel
+          {tCommon('cancel')}
         </Link>
         <Button type="submit">{submitLabel}</Button>
       </div>
