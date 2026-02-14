@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { sql } from '@/app/lib/actions/db';
+import { requireUserId } from '@/app/lib/auth-helpers';
 
 export type ExpenseTypeFormState = {
   errors?: {
@@ -38,6 +39,7 @@ export async function createExpenseType(
   prevState: ExpenseTypeFormState,
   formData: FormData,
 ) {
+  const userId = await requireUserId();
   const validatedFields = ExpenseTypeSchema.safeParse({
     name: formData.get('name'),
     color: formData.get('color'),
@@ -59,8 +61,8 @@ export async function createExpenseType(
 
   try {
     await sql`
-      INSERT INTO type_of_expenses (name, color, description, limit_month_spent)
-      VALUES (${name}, ${color}, ${descriptionValue}, ${limitValue})
+      INSERT INTO type_of_expenses (name, color, description, limit_month_spent, user_id)
+      VALUES (${name}, ${color}, ${descriptionValue}, ${limitValue}, ${userId})
     `;
   } catch (error: any) {
     if (error?.code === '23505') {
@@ -83,6 +85,7 @@ export async function updateExpenseType(
   prevState: ExpenseTypeFormState,
   formData: FormData,
 ) {
+  const userId = await requireUserId();
   const validatedFields = ExpenseTypeSchema.safeParse({
     name: formData.get('name'),
     color: formData.get('color'),
@@ -106,7 +109,7 @@ export async function updateExpenseType(
     await sql`
       UPDATE type_of_expenses
       SET name = ${name}, color = ${color}, description = ${descriptionValue}, limit_month_spent = ${limitValue}
-      WHERE id = ${id}
+      WHERE id = ${id} AND user_id = ${userId}
     `;
   } catch (error: any) {
     if (error?.code === '23505') {
@@ -128,8 +131,9 @@ export async function deleteExpenseType(
   id: string,
   prevState: DeleteExpenseTypeState,
 ): Promise<DeleteExpenseTypeState> {
+  const userId = await requireUserId();
   try {
-    await sql`DELETE FROM type_of_expenses WHERE id = ${id}`;
+    await sql`DELETE FROM type_of_expenses WHERE id = ${id} AND user_id = ${userId}`;
   } catch (error) {
     console.error('Database Error:', error);
     return { message: 'Database Error: Failed to Delete Expense Type.' };
