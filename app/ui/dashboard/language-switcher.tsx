@@ -16,7 +16,8 @@ export default async function LanguageSwitcher() {
               className={`whitespace-nowrap rounded px-2 py-1 ${locale === 'en' ? 'bg-sky-100 text-blue-700' : 'hover:bg-gray-100'}`}
               type="submit"
             >
-              {tLocale('english')}
+              <span className="md:hidden">EN</span>
+              <span className="hidden md:inline">{tLocale('english')}</span>
             </button>
           </form>
           <form action={setLocale}>
@@ -25,7 +26,8 @@ export default async function LanguageSwitcher() {
               className={`whitespace-nowrap rounded px-2 py-1 ${locale === 'ru' ? 'bg-sky-100 text-blue-700' : 'hover:bg-gray-100'}`}
               type="submit"
             >
-              {tLocale('russian')}
+              <span className="md:hidden">RU</span>
+              <span className="hidden md:inline">{tLocale('russian')}</span>
             </button>
           </form>
           <form action={setLocale}>
@@ -34,7 +36,8 @@ export default async function LanguageSwitcher() {
               className={`whitespace-nowrap rounded px-2 py-1 ${locale === 'es' ? 'bg-sky-100 text-blue-700' : 'hover:bg-gray-100'}`}
               type="submit"
             >
-              {tLocale('spanish')}
+              <span className="md:hidden">ES</span>
+              <span className="hidden md:inline">{tLocale('spanish')}</span>
             </button>
           </form>
         </div>
